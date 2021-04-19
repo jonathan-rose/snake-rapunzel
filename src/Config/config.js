@@ -2,12 +2,13 @@ import 'phaser';
 
 export default {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 1024,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            fps: 60,
+            gravity: { y: 0 },
             debug: false
         }
     }
