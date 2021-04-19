@@ -119,11 +119,7 @@ export default class GameScene extends Phaser.Scene {
 
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(player, platforms);
-        this.physics.add.collider(stars, platforms);
         this.physics.add.collider(bombs, platforms);
-
-        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(player, stars, collectStar, null, this);
 
         this.physics.add.collider(hairSection1, bombs, hitBomb, null, this);
     }
@@ -170,6 +166,7 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 };
+
 function updateHair()
 {
 	// Everytime the hair head moves, insert the new location at the start of the array, 
@@ -199,13 +196,6 @@ function updateHair()
     	hairSection3[i].y = (hairPath3[i * hairSpacer]).y;
     }
 }
-
-
-
-
-
-
-
 
 function hitBomb (player, bomb)
 {
