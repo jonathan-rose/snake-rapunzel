@@ -36,6 +36,8 @@
       var gameOver = false;
       var score = 0;
       var scoreText;
+      var baseVelocity = 400;
+      var baseAccel = 10000;
 
       function preload ()
       {
@@ -51,16 +53,16 @@
         const width = this.scale.width;
         const height = this.scale.height;
 
-        
-        this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
-        // this.cameras.main.setZoom(0.5);
-
         //Create world bounds
         this.physics.world.setBounds(0, 0, width * 2, height * 2);
+        
+
+        //Set camera bounds to match world        
+        this.cameras.main.setBounds(0, 0, width * 2, height * 2);
+        // this.cameras.main.setZoom(0.5);
 
         background = this.add.tileSprite(0, 0, 1024, 1024, 'background');
-        // background.setTilePosition(32, 32);
-        background.setTileScale(3, 3); //Scale factors of tile
+        background.setTileScale(2, 2); //Scale factors of tile
         background.setOrigin(0, 0);
 
         player = this.physics.add.sprite(width * 0.5, height * 0.5, 'head');
@@ -122,23 +124,27 @@
 
         if (cursors.left.isDown)
         {
-          player.setVelocityX(-300);
+          player.setAcceleration(-baseAccel, 0);
+          player.setVelocityX(-baseVelocity);
           player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-          player.setVelocityX(300);
+          player.setAcceleration(baseAccel, 0);
+          player.setVelocityX(baseVelocity);
           player.anims.play('right', true);
         }
 
         if (cursors.up.isDown)
         {
-          player.setVelocityY(-300);
+          player.setAcceleration(0, -baseAccel);
+          player.setVelocityY(-baseVelocity);
           player.anims.play('up', true);
         }
         else if (cursors.down.isDown)
         {
-          player.setVelocityY(300);
+          player.setAcceleration(0, baseAccel);
+          player.setVelocityY(baseVelocity);
           player.anims.play('down', true);
         }
       }
