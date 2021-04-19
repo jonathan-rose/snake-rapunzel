@@ -42,7 +42,9 @@ export default class OptionsScene extends Phaser.Scene {
     updateAudio() {
         if (this.model.musicOn === false) {
             this.musicButton.setTexture('box');
-            this.sys.game.globals.bgMusic.stop();
+            if (this.sys.game.globals.bgMusic != null) {
+                this.sys.game.globals.bgMusic.stop();
+            }
             this.model.bgMusicPlaying = false;
         } else {
             this.musicButton.setTexture('checkedBox');

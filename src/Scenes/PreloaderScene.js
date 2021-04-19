@@ -80,7 +80,9 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.spritesheet('head', 'assets/head.png', {frameWidth: 75, frameHeight: 75});
         
         this.load.image('background', 'assets/background.png');
-        this.load.image('scissors', 'assets/scissors.png')
+        this.load.image('scissors', 'assets/scissors.png');
+        this.load.image('star', 'assets/star.png');
+
 
         // remove progress bar when complete
         this.load.on('complete', function () {
