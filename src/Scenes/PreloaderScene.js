@@ -77,21 +77,10 @@ export default class PreloaderScene extends Phaser.Scene {
         
         this.load.audio('bgMusic', ['assets/Komiku_-_07_-_Run_against_the_universe.mp3']);
 
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
-        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-
-        this.load.image('menuBG', 'assets/sky.png');
-        this.load.image('aboutBG', 'assets/sky.png');
-        this.load.image('deathScene', 'assets/deathScene.png');
-
-        this.load.image('Button', 'assets/button1.png');
-        this.load.image('ButtonPressed', 'assets/button1selected.png');
-        this.load.image('box', 'assets/box.png');
-        this.load.image('checkedBox', 'assets/checked1.png');
-        this.load.image('Logo', 'assets/logoBigger.png');
+        this.load.spritesheet('head', 'assets/head.png', {frameWidth: 75, frameHeight: 75});
+        
+        this.load.image('background', 'assets/background.png');
+        this.load.image('scissors', 'assets/scissors.png')
 
         // remove progress bar when complete
         this.load.on('complete', function () {
@@ -114,7 +103,7 @@ export default class PreloaderScene extends Phaser.Scene {
     }
 
     ready () {
-        this.scene.start('Title');
+        this.scene.start('Game');
         // this.readyCount++;
         // if (this.readyCount === 20) {
         //     this.scene.start('Credits');
