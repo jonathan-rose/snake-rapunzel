@@ -46,12 +46,13 @@
         this.load.spritesheet('head', 'assets/head.png', {frameWidth: 75, frameHeight: 75});
         
         this.load.image('background', 'assets/background.png');
+        this.load.image('scissors', 'assets/scissors.png')
       }
 
       function create ()
       {
-        const width = this.scale.width;
-        const height = this.scale.height;
+        const width = game.config.width;
+        const height = game.config.height;
 
         //Create world bounds
         this.physics.world.setBounds(0, 0, width * 2, height * 2);
@@ -61,7 +62,7 @@
         this.cameras.main.setBounds(0, 0, width * 2, height * 2);
         // this.cameras.main.setZoom(0.5);
 
-        background = this.add.tileSprite(0, 0, 1024, 1024, 'background');
+        background = this.add.tileSprite(0, 0, width * 2, height * 2, 'background');
         background.setTileScale(2, 2); //Scale factors of tile
         background.setOrigin(0, 0);
 
@@ -71,11 +72,10 @@
         player.setDamping(true);
         player.setMaxVelocity(500);
         player.setCollideWorldBounds(true);
-        // player.body.setGravityY(0); //No gravity
-        // player.anchor.setTo(0.5);
 
-        // this.cameras.main.startFollow(this.player, true, 0.05, 0.05); - not working
-        // Player can move off camera but the camera does not follow
+        scissors = this.physics.add.sprite(100, 100, 'scissors');
+        scissors.setScale(3);
+
 
         cursors = this.input.keyboard.createCursorKeys();
 
