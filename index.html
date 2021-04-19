@@ -8,11 +8,11 @@
   <body>
 
     <script type="text/javascript">
-    
+   
       var config = {
         type: Phaser.auto,
-        width: 1000,
-        height: 1000,
+        width: 1024,
+        height: 1024,
         physics: {
           default: 'arcade',
           arcade: {
@@ -29,7 +29,6 @@
 
         }
       };
-
 
       // Main variables
       var game = new Phaser.Game(config);
@@ -52,8 +51,12 @@
         const width = this.scale.width;
         const height = this.scale.height;
 
+        
         this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
-        this.physics.world.setBounds(0, 0, 1920 * 2, 1080 * 2);
+        // this.cameras.main.setZoom(0.5);
+
+        //Create world bounds
+        this.physics.world.setBounds(0, 0, width * 2, height * 2);
 
         background = this.add.tileSprite(0, 0, 1024, 1024, 'background');
         // background.setTilePosition(32, 32);
@@ -70,6 +73,7 @@
         // player.anchor.setTo(0.5);
 
         // this.cameras.main.startFollow(this.player, true, 0.05, 0.05); - not working
+        // Player can move off camera but the camera does not follow
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -111,6 +115,9 @@
 
       function update ()
       {
+        //Make camera follow player
+        this.cameras.main.startFollow(player);
+
         player.setVelocity(0);
 
         if (cursors.left.isDown)
