@@ -1,5 +1,4 @@
 import 'phaser';
-import { GameObject } from 'phaser/src/gameobjects';
 import Button from '../Objects/Button';
 
 var player;
