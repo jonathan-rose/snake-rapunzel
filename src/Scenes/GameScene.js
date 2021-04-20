@@ -31,8 +31,9 @@ var hairSection3 = new Array();
 var hairPath1 = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var hairPath2 = new Array();
 var hairPath3 = new Array();
-var numhairSections = 10; //number of hair sections
-var hairSpacer = 6; //parameter that sets the spacing between sections
+var numhairSections = 30; //number of hair sections
+var hairSpacer = 2; //parameter that sets the spacing between sections
+
 
 export default class GameScene extends Phaser.Scene {
     constructor () {
@@ -56,7 +57,7 @@ export default class GameScene extends Phaser.Scene {
         background.setTileScale(2, 2); //Scale factors of tile
         background.setOrigin(0, 0);
 
-        player = this.physics.add.sprite(width * 0.5, height * 0.5, 'head');
+        player = this.physics.add.sprite(width * 0.5, height * 0.5, 'snake');
         player.setOrigin(0.5,0.5);
         player.setBounce(0.2);
         player.setDamping(true);
@@ -76,36 +77,30 @@ export default class GameScene extends Phaser.Scene {
         // Load sprite frames
         this.anims.create({
           key: 'up',
-          frames: this.anims.generateFrameNumbers('head', {start: 0, end: 0}),
+          frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 3}),
           framerate: 10,
           repeat: -1,
         });
 
         this.anims.create({
           key: 'down',
-          frames: this.anims.generateFrameNumbers('head', {start: 1, end: 1}),
+          frames: this.anims.generateFrameNumbers('snake', {start: 8, end: 11}),
           framerate: 10,
           repeat: -1,
         });
 
         this.anims.create({
           key: 'left',
-          frames: this.anims.generateFrameNumbers('head', {start: 2, end: 2}),
+          frames: this.anims.generateFrameNumbers('snake', {start: 4, end: 7}),
           frameRate: 10,
           repeat: -1
         });
 
         this.anims.create({
           key: 'right',
-          frames: this.anims.generateFrameNumbers('head', {start: 3, end: 3}),
+          frames: this.anims.generateFrameNumbers('snake', {start: 12, end: 15}),
           frameRate: 10,
           repeate: -1
-        });
-
-        this.anims.create({
-          key: 'turn',
-          frames: [{key: 'head', frame: 4}],
-          frameRate: 20
         });
 
         bombs = this.physics.add.group();
@@ -113,9 +108,9 @@ export default class GameScene extends Phaser.Scene {
         //  Init hairSection array
         for (var i = 1; i <= numhairSections-1; i++)
         {
-        	hairSection1[i] = this.physics.add.sprite(400, 300, 'star');
-        	hairSection2[i] = this.physics.add.sprite(400, 300, 'star');
-        	hairSection3[i] = this.physics.add.sprite(400, 300, 'star');
+        	hairSection1[i] = this.physics.add.sprite(400, 300, 'hair');
+        	hairSection2[i] = this.physics.add.sprite(400, 300, 'hair');
+        	hairSection3[i] = this.physics.add.sprite(400, 300, 'hair');
         }
 
     	//  Init hairPath array
@@ -141,38 +136,36 @@ export default class GameScene extends Phaser.Scene {
         timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
         //Make camera follow player
         this.cameras.main.startFollow(player);
-
+        
+        updateHair();
         player.setVelocity(0);
+        
 
         if (cursors.left.isDown)
         {
-          player.setAcceleration(-baseAccel, 0);
-          player.setVelocityX(-baseVelocity);
-          updateHair();
-	        player.anims.play('left', true);
+          	player.setAcceleration(-baseAccel, 0);
+          	player.setVelocityX(-baseVelocity);
+	  		player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-          player.setAcceleration(baseAccel, 0);
-          player.setVelocityX(baseVelocity);
-          updateHair();
-	        player.anims.play('right', true);
+          	player.setAcceleration(baseAccel, 0);
+          	player.setVelocityX(baseVelocity);
+	  	player.anims.play('right', true);
         }
         else if (cursors.up.isDown)
         {
-          player.setAcceleration(0, -baseAccel);
-          player.setVelocityY(-baseVelocity);
-          updateHair();
-	        player.anims.play('up', true);
-        }
-        else if (cursors.down.isDown)
-        {
-          player.setAcceleration(0, baseAccel);
-          player.setVelocityY(baseVelocity);
-          updateHair();
-	        player.anims.play('down', true);
+          	player.setAcceleration(0, -baseAccel);
+          	player.setVelocityY(-baseVelocity);
+	  	player.anims.play('up', true);
         }
 
+        else if (cursors.down.isDown)
+        {
+          	player.setAcceleration(0, baseAccel);
+          	player.setVelocityY(baseVelocity);
+	  	player.anims.play('down', true);
+        }
 
         var width = game.config.width;
         var height = game.config.height;
@@ -182,8 +175,6 @@ export default class GameScene extends Phaser.Scene {
         addScissors(randGameX, randGameY);
 
         this.physics.add.collider(player, scissors);
-
-        // this.physics.add.overlap(player, scissors, hitScissors, null, this);
     }
 };
 
@@ -192,16 +183,25 @@ function updateHair()
 	// Everytime the hair head moves, insert the new location at the start of the array, 
     // and knock the last position off the end
 
-    var part1 = hairPath1.pop();
-    part1.setTo(player.x - 10, player.y -10);
-    hairPath1.unshift(part1);
-
+    var part1 = hairPath1.pop(); //last item
     var part2 = hairPath2.pop();
-    part2.setTo(player.x, player.y);
-    hairPath2.unshift(part2);
-
     var part3 = hairPath3.pop();
-    part3.setTo(player.x +10, player.y +10);
+    
+    if (player.body.velocity.x == 0)
+    {
+    	part1.setTo(player.x +10, player.y); //move last item to players position
+    	part3.setTo(player.x -10, player.y);
+    }
+    else if (player.body.velocity.y == 0)
+    {
+    	part1.setTo(player.x, player.y+10); //move last item to players position
+    	part3.setTo(player.x, player.y-10);
+
+    }
+    part2.setTo(player.x, player.y);
+
+    hairPath1.unshift(part1); //add to front of the array
+    hairPath2.unshift(part2);
     hairPath3.unshift(part3);
 
     for (var i = 1; i <= numhairSections - 1; i++)
@@ -215,7 +215,7 @@ function updateHair()
     	hairSection3[i].x = (hairPath3[i * hairSpacer]).x;
     	hairSection3[i].y = (hairPath3[i * hairSpacer]).y;
     }
-};
+}
 
 function addScissors(x, y)
 {
@@ -235,7 +235,6 @@ function addScissors(x, y)
 // {
 //   scissor.disableBody(true, true);
 // }
-
 function hitBomb (player, bomb)
 {
     var config = this.game.config;
