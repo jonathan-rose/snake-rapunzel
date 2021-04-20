@@ -166,6 +166,15 @@ export default class GameScene extends Phaser.Scene {
           	player.setVelocityY(baseVelocity);
 	  	player.anims.play('down', true);
         }
+
+        var width = game.config.width;
+        var height = game.config.height;
+
+        var randGameX = Phaser.Math.Between(50, width);
+        var randGameY = Phaser.Math.Between(50, height);
+        addScissors(randGameX, randGameY);
+
+        this.physics.add.collider(player, scissors);
     }
 };
 
@@ -221,14 +230,6 @@ function addScissors(x, y)
     scissorsCount += 1;
   }
 }
-
-
-
-
-
-
-
-
 
 // function hitScissors (player, scissor)
 // {
