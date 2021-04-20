@@ -31,20 +31,20 @@ var hairSection3 = new Array();
 var hairPath1 = new Array(); //arrary of positions(points) that have to be stored for the path the sections follow
 var hairPath2 = new Array();
 var hairPath3 = new Array();
-var numhairSections = 30; //number of hair sections
-var hairSpacer = 2; //parameter that sets the spacing between sections
+var numhairSections = 20; //number of hair sections
+var hairSpacer = 4; //parameter that sets the spacing between sections - 3 for one long hair, 4 for blocks
 
 
 export default class GameScene extends Phaser.Scene {
-    constructor () {
-        super('Game');
-    }
+	constructor () {
+		super('Game');
+	}
 
 
-    create ()
-    {
-        var width = game.config.width;
-        var height = game.config.height;
+	create ()
+	{
+		var width = game.config.width;
+		var height = game.config.height;
         //Create world bounds
         this.physics.world.setBounds(0, 0, width * 2, height * 2);
         
@@ -69,38 +69,38 @@ export default class GameScene extends Phaser.Scene {
         scissors = this.physics.add.group();
 
         timer = this.time.addEvent({
-          delay: timerLength,
+        	delay: timerLength,
         });
         
         timerText = this.add.text(16, 64, { fontSize: '32px', fill: '#000' });
 
         // Load sprite frames
         this.anims.create({
-          key: 'up',
-          frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 3}),
-          framerate: 10,
-          repeat: -1,
+        	key: 'up',
+        	frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 3}),
+        	frameRate: 10,
+        	repeat: -1,
         });
 
         this.anims.create({
-          key: 'down',
-          frames: this.anims.generateFrameNumbers('snake', {start: 8, end: 11}),
-          framerate: 10,
-          repeat: -1,
+        	key: 'down',
+        	frames: this.anims.generateFrameNumbers('snake', {start: 8, end: 11}),
+        	frameRate: 10,
+        	repeat: -1,
         });
 
         this.anims.create({
-          key: 'left',
-          frames: this.anims.generateFrameNumbers('snake', {start: 4, end: 7}),
-          frameRate: 10,
-          repeat: -1
+        	key: 'left',
+        	frames: this.anims.generateFrameNumbers('snake', {start: 4, end: 7}),
+        	frameRate: 10,
+        	repeat: -1
         });
 
         this.anims.create({
-          key: 'right',
-          frames: this.anims.generateFrameNumbers('snake', {start: 12, end: 15}),
-          frameRate: 10,
-          repeate: -1
+        	key: 'right',
+        	frames: this.anims.generateFrameNumbers('snake', {start: 12, end: 15}),
+        	frameRate: 10,
+        	repeat: -1
         });
 
         bombs = this.physics.add.group();
@@ -128,43 +128,43 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.collider(player, platforms);
         this.physics.add.collider(bombs, platforms);
 
-        this.physics.add.collider(hairSection1, bombs, hitBomb, null, this);
+        //this.physics.add.collider(player, scissors);
+
+        this.physics.add.collider(hairSection1, scissors, hitScissors, null, this);
+        this.physics.add.collider(hairSection2, scissors, hitScissors, null, this);
+        this.physics.add.collider(hairSection3, scissors, hitScissors, null, this);
     }
 
     update ()
     {
-        timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
+    	timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
         //Make camera follow player
         this.cameras.main.startFollow(player);
         
         updateHair();
-        player.setVelocity(0);
+        //player.setVelocity(0);
         
 
         if (cursors.left.isDown)
         {
-          	player.setAcceleration(-baseAccel, 0);
-          	player.setVelocityX(-baseVelocity);
-	  		player.anims.play('left', true);
+        	player.setVelocity(-baseVelocity, 0);
+        	player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-          	player.setAcceleration(baseAccel, 0);
-          	player.setVelocityX(baseVelocity);
-	  	player.anims.play('right', true);
+        	player.setVelocity(baseVelocity, 0);
+        	player.anims.play('right', true);
         }
         else if (cursors.up.isDown)
         {
-          	player.setAcceleration(0, -baseAccel);
-          	player.setVelocityY(-baseVelocity);
-	  	player.anims.play('up', true);
+        	player.setVelocity(0, -baseVelocity);
+        	player.anims.play('up', true);
         }
 
         else if (cursors.down.isDown)
         {
-          	player.setAcceleration(0, baseAccel);
-          	player.setVelocityY(baseVelocity);
-	  	player.anims.play('down', true);
+        	player.setVelocity(0, baseVelocity);
+        	player.anims.play('down', true);
         }
 
         var width = game.config.width;
@@ -173,8 +173,6 @@ export default class GameScene extends Phaser.Scene {
         var randGameX = Phaser.Math.Between(50, width);
         var randGameY = Phaser.Math.Between(50, height);
         addScissors(randGameX, randGameY);
-
-        this.physics.add.collider(player, scissors);
     }
 };
 
@@ -189,13 +187,13 @@ function updateHair()
     
     if (player.body.velocity.x == 0)
     {
-    	part1.setTo(player.x +10, player.y); //move last item to players position
-    	part3.setTo(player.x -10, player.y);
+    	part1.setTo(player.x +26, player.y); //move last item to players position
+    	part3.setTo(player.x -26, player.y);
     }
     else if (player.body.velocity.y == 0)
     {
-    	part1.setTo(player.x, player.y+10); //move last item to players position
-    	part3.setTo(player.x, player.y-10);
+    	part1.setTo(player.x, player.y+26); //move last item to players position
+    	part3.setTo(player.x, player.y-26);
 
     }
     part2.setTo(player.x, player.y);
@@ -219,45 +217,48 @@ function updateHair()
 
 function addScissors(x, y)
 {
-  if (scissorsCount <= scissorsMax) {
-    var scissor = scissors.create(x, y, 'scissors');
-    scissor.setScale(2);
-    scissor.setVelocity(Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel), Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel));
-    scissor.setAngularVelocity(Phaser.Math.Between(scissorsMinAngVel, scissorsMaxAngVel));
-    scissor.setCollideWorldBounds(true);
-    scissor.setBounce(Phaser.Math.Between(0, 5));
-    scissor.setMaxVelocity(scissorsMaxVel);
-    scissorsCount += 1;
-  }
+	if (scissorsCount <= scissorsMax) {
+		var scissor = scissors.create(x, y, 'scissors');
+		scissor.setScale(2);
+		scissor.setVelocity(Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel), Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel));
+		scissor.setAngularVelocity(Phaser.Math.Between(scissorsMinAngVel, scissorsMaxAngVel));
+		scissor.setCollideWorldBounds(true);
+		scissor.setBounce(Phaser.Math.Between(0, 5));
+		scissor.setMaxVelocity(scissorsMaxVel);
+		scissorsCount = scissors.countActive(); // updates scissor count when a scissor is created
+	}
 }
 
-// function hitScissors (player, scissor)
-// {
-//   scissor.disableBody(true, true);
-// }
+function hitScissors (hair, scissor)
+{
+	scissor.destroy();
+	scissorsCount = scissors.countActive(); // updates scissor count when a scissor is destroyed
+	hair.disableBody(true, true);
+}
+
 function hitBomb (player, bomb)
 {
-    var config = this.game.config;
-    this.model = this.sys.game.globals.model; 
+	var config = this.game.config;
+	this.model = this.sys.game.globals.model; 
 
-    this.physics.pause();
+	this.physics.pause();
 
-    player.setTint(0xff0000);
+	player.setTint(0xff0000);
 
-    player.anims.play('turn');
+	player.anims.play('turn');
 
-    var timer = this.time.delayedCall(1000, function(){
-        var popup = this.add.image(config.width/2, config.height/2, 'deathScene')
-        this.add.text(355, 410, score, { fontSize: '80px', fill: '#FFF' });
-        var menuButton = new Button(this, 200, 550, 'Button', 'ButtonPressed', 'Menu', 'Title');
-        var playButton = new Button(this, 600, 550, 'Button', 'ButtonPressed', 'Play Again', 'Game');
+	var timer = this.time.delayedCall(1000, function(){
+		var popup = this.add.image(config.width/2, config.height/2, 'deathScene')
+		this.add.text(355, 410, score, { fontSize: '80px', fill: '#FFF' });
+		var menuButton = new Button(this, 200, 550, 'Button', 'ButtonPressed', 'Menu', 'Title');
+		var playButton = new Button(this, 600, 550, 'Button', 'ButtonPressed', 'Play Again', 'Game');
 
-        if (score > this.model.highscore) {
-            this.model.highscore = score;
-            var newhighscoretext = this.add.text(500, 290, 'New High Score!', { fontSize: '20px', fill: '#F9BE4F' });
-            newhighscoretext.angle = 35;
-        }
+		if (score > this.model.highscore) {
+			this.model.highscore = score;
+			var newhighscoretext = this.add.text(500, 290, 'New High Score!', { fontSize: '20px', fill: '#F9BE4F' });
+			newhighscoretext.angle = 35;
+		}
 
-        score = 0;
-    }, [], this); 
+		score = 0;
+	}, [], this); 
 }
