@@ -15,12 +15,16 @@ var baseVelocity = 400;
 var baseAccel = 10000;
 var background;
 var scissors;
-var scissorsMax = 10;
+var scissorsMax = 20;
 var scissorsCount = 1;
 var scissorsMinVel = 100;
 var scissorsMaxVel = 200;
 var scissorsMinAngVel = -200;
 var scissorsMaxAngVel = 200;
+
+var timer;
+var timerLength = 10000; //ms
+var timerText;
 
 var hairSection1 = new Array(); //array of sprites that make the hair sections
 var hairSection2 = new Array();
@@ -63,7 +67,12 @@ export default class GameScene extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
 
         scissors = this.physics.add.group();
+
+        timer = this.time.addEvent({
+          delay: timerLength,
+        });
         
+        timerText = this.add.text(16, 64, { fontSize: '32px', fill: '#000' });
 
         // Load sprite frames
         this.anims.create({
@@ -130,6 +139,7 @@ export default class GameScene extends Phaser.Scene {
 
     update ()
     {
+        timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
         //Make camera follow player
         this.cameras.main.startFollow(player);
 
@@ -171,6 +181,10 @@ export default class GameScene extends Phaser.Scene {
         var randGameX = Phaser.Math.Between(50, width);
         var randGameY = Phaser.Math.Between(50, height);
         addScissors(randGameX, randGameY);
+
+        this.physics.add.collider(player, scissors);
+
+        // this.physics.add.overlap(player, scissors, hitScissors, null, this);
     }
 };
 
@@ -208,15 +222,20 @@ function addScissors(x, y)
 {
   if (scissorsCount <= scissorsMax) {
     var scissor = scissors.create(x, y, 'scissors');
-    scissor.setScale(3);
+    scissor.setScale(2);
     scissor.setVelocity(Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel), Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel));
     scissor.setAngularVelocity(Phaser.Math.Between(scissorsMinAngVel, scissorsMaxAngVel));
     scissor.setCollideWorldBounds(true);
-    scissor.setBounce(5);
+    scissor.setBounce(Phaser.Math.Between(0, 5));
     scissor.setMaxVelocity(scissorsMaxVel);
     scissorsCount += 1;
   }
 }
+
+// function hitScissors (player, scissor)
+// {
+//   scissor.disableBody(true, true);
+// }
 
 function hitBomb (player, bomb)
 {
