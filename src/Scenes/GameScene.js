@@ -14,6 +14,16 @@ var baseVelocity = 400;
 var baseAccel = 10000;
 var background;
 var scissors;
+var scissorsMax = 20;
+var scissorsCount = 1;
+var scissorsMinVel = 100;
+var scissorsMaxVel = 200;
+var scissorsMinAngVel = -200;
+var scissorsMaxAngVel = 200;
+
+var timer;
+var timerLength = 10000; //ms
+var timerText;
 
 var hairSection1 = new Array(); //array of sprites that make the hair sections
 var hairSection2 = new Array();
@@ -33,9 +43,8 @@ export default class GameScene extends Phaser.Scene {
 
     create ()
     {
-        const width = game.config.width;
-        const height = game.config.height;
-
+        var width = game.config.width;
+        var height = game.config.height;
         //Create world bounds
         this.physics.world.setBounds(0, 0, width * 2, height * 2);
         
@@ -55,11 +64,15 @@ export default class GameScene extends Phaser.Scene {
         player.setMaxVelocity(500);
         player.setCollideWorldBounds(true);
 
-        scissors = this.physics.add.sprite(100, 100, 'scissors');
-        scissors.setScale(3);
-
-
         cursors = this.input.keyboard.createCursorKeys();
+
+        scissors = this.physics.add.group();
+
+        timer = this.time.addEvent({
+          delay: timerLength,
+        });
+        
+        timerText = this.add.text(16, 64, { fontSize: '32px', fill: '#000' });
 
         // Load sprite frames
         this.anims.create({
@@ -120,6 +133,7 @@ export default class GameScene extends Phaser.Scene {
 
     update ()
     {
+        timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
         //Make camera follow player
         this.cameras.main.startFollow(player);
         
@@ -137,20 +151,20 @@ export default class GameScene extends Phaser.Scene {
         {
           	player.setAcceleration(baseAccel, 0);
           	player.setVelocityX(baseVelocity);
-	  		player.anims.play('right', true);
+	  	player.anims.play('right', true);
         }
         else if (cursors.up.isDown)
         {
           	player.setAcceleration(0, -baseAccel);
           	player.setVelocityY(-baseVelocity);
-	  		player.anims.play('up', true);
+	  	player.anims.play('up', true);
         }
 
         else if (cursors.down.isDown)
         {
           	player.setAcceleration(0, baseAccel);
           	player.setVelocityY(baseVelocity);
-	  		player.anims.play('down', true);
+	  	player.anims.play('down', true);
         }
     }
 };
@@ -194,6 +208,32 @@ function updateHair()
     }
 }
 
+function addScissors(x, y)
+{
+  if (scissorsCount <= scissorsMax) {
+    var scissor = scissors.create(x, y, 'scissors');
+    scissor.setScale(2);
+    scissor.setVelocity(Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel), Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel));
+    scissor.setAngularVelocity(Phaser.Math.Between(scissorsMinAngVel, scissorsMaxAngVel));
+    scissor.setCollideWorldBounds(true);
+    scissor.setBounce(Phaser.Math.Between(0, 5));
+    scissor.setMaxVelocity(scissorsMaxVel);
+    scissorsCount += 1;
+  }
+}
+
+
+
+
+
+
+
+
+
+// function hitScissors (player, scissor)
+// {
+//   scissor.disableBody(true, true);
+// }
 function hitBomb (player, bomb)
 {
     var config = this.game.config;
