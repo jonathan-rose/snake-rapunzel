@@ -72,6 +72,7 @@ export default class GameScene extends Phaser.Scene {
         timer = this.time.addEvent({
             delay: timerLength,
             callback: onTimerEvent,
+            callbackScope: this,
             loop: true,
           });
         
@@ -109,17 +110,17 @@ export default class GameScene extends Phaser.Scene {
         //  Init hairSection array
         for (var i = 1; i <= numhairSections-1; i++)
         {
-        	hairSection1[i] = this.physics.add.sprite(400, 300, 'hair');
-        	hairSection2[i] = this.physics.add.sprite(400, 300, 'hair');
-        	hairSection3[i] = this.physics.add.sprite(400, 300, 'hair');
+        	hairSection1[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
+        	hairSection2[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
+        	hairSection3[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
         }
 
     	//  Init hairPath array
     	for (var i = 0; i <= numhairSections * hairSpacer; i++)
     	{
-    		hairPath1[i] = new Phaser.Geom.Point(400, 300);
-    		hairPath2[i] = new Phaser.Geom.Point(400, 300);
-    		hairPath3[i] = new Phaser.Geom.Point(400, 300);
+    		hairPath1[i] = new Phaser.Geom.Point(width * 0.5, height * 0.5,);
+    		hairPath2[i] = new Phaser.Geom.Point(width * 0.5, height * 0.5,);
+    		hairPath3[i] = new Phaser.Geom.Point(width * 0.5, height * 0.5,);
     	}
 
         //  The score
@@ -280,5 +281,9 @@ function onTimerEvent()
 {
     roundNumber++;
     scissorsMax = scissorsMax + 5;
-    roundText.setText('round: ' + roundNumber)
+    roundText.setText('round: ' + roundNumber);
+    this.model = this.sys.game.globals.model;
+    if (this.model.soundOn === true) {
+      	this.game.registry.get('levelUp').play();
+    }
 }
