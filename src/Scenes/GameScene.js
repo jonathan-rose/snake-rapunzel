@@ -24,7 +24,6 @@ var scissorsMaxAngVel = 200;
 
 var timer;
 var timerLength = 10000; //ms
-var timerText;
 
 var hairSection1 = new Array(); //array of sprites that make the hair sections
 var hairSection2 = new Array();
@@ -124,9 +123,9 @@ export default class GameScene extends Phaser.Scene {
     	}
 
         //  The score
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-        roundText = this.add.text(16, 48, 'round: ' + roundNumber, { fontSize: '32px', fill: '#000' });
-        scissorText = this.add.text(16, 80, 'scissors: ' + scissorsMax, { fontSize: '32px', fill: '#000' });
+        // scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        roundText = this.add.text(16, 16, 'round: ' + roundNumber, { fontSize: '32px', fill: '#000' });
+        scissorText = this.add.text(16, 48, 'scissors: ' + scissorsMax, { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(player, platforms);
