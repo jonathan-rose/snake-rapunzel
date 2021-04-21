@@ -9,13 +9,14 @@ var hairGroup;
 var cursors;
 var score = 0;
 var scoreText;
-var gameOver = false;
+var scissorText;
+var roundText;
+var roundNumber = 1;
 var baseVelocity = 400;
-var baseAccel = 10000;
 var background;
 var scissors;
-var scissorsMax = 20;
-var scissorsCount = 1;
+var scissorsMax = 19; //bodge to deal with starting at 0, means there are 20 total
+var scissorsCount = 10;
 var scissorsMinVel = 100;
 var scissorsMaxVel = 200;
 var scissorsMinAngVel = -200;
@@ -23,7 +24,6 @@ var scissorsMaxAngVel = 200;
 
 var timer;
 var timerLength = 10000; //ms
-var timerText;
 
 var hairSection1 = new Array(); //array of sprites that make the hair sections
 var hairSection2 = new Array();
@@ -68,12 +68,13 @@ export default class GameScene extends Phaser.Scene {
 
         scissors = this.physics.add.group();
 
+        //Timer for spawning more scissors every timerLength miliseconds
         timer = this.time.addEvent({
-        	delay: timerLength,
-        });
+            delay: timerLength,
+            callback: onTimerEvent,
+            loop: true,
+          });
         
-        timerText = this.add.text(16, 64, { fontSize: '32px', fill: '#000' });
-
         // Load sprite frames
         this.anims.create({
         	key: 'up',
@@ -122,7 +123,9 @@ export default class GameScene extends Phaser.Scene {
     	}
 
         //  The score
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        // scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        roundText = this.add.text(16, 16, 'round: ' + roundNumber, { fontSize: '32px', fill: '#000' });
+        scissorText = this.add.text(16, 48, 'scissors: ' + scissorsMax, { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(player, platforms);
@@ -137,10 +140,12 @@ export default class GameScene extends Phaser.Scene {
 
     update ()
     {
-    	timerText.setText('Time elapsed: ' + timer.getProgress().toString().substr(0, 3));
-        //Make camera follow player
         this.cameras.main.startFollow(player);
-        
+
+        console.log(scissors.countActive());
+
+        scissorText.setText('scissors: ' + scissors.countActive());
+
         updateHair();
         //player.setVelocity(0);
         
@@ -173,6 +178,9 @@ export default class GameScene extends Phaser.Scene {
         var randGameX = Phaser.Math.Between(50, width);
         var randGameY = Phaser.Math.Between(50, height);
         addScissors(randGameX, randGameY);
+
+
+
     }
 };
 
@@ -219,11 +227,11 @@ function addScissors(x, y)
 {
 	if (scissorsCount <= scissorsMax) {
 		var scissor = scissors.create(x, y, 'scissors');
-		scissor.setScale(2);
+		scissor.setScale(1);
 		scissor.setVelocity(Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel), Phaser.Math.Between(-scissorsMinVel, scissorsMaxVel));
 		scissor.setAngularVelocity(Phaser.Math.Between(scissorsMinAngVel, scissorsMaxAngVel));
 		scissor.setCollideWorldBounds(true);
-		scissor.setBounce(Phaser.Math.Between(0, 5));
+		scissor.setBounce(Phaser.Math.Between(1, 5));
 		scissor.setMaxVelocity(scissorsMaxVel);
 		scissorsCount = scissors.countActive(); // updates scissor count when a scissor is created
 	}
@@ -265,5 +273,12 @@ function hitBomb (player, bomb)
 		}
 
 		score = 0;
-	}, [], this); 
+	}, [], this);
+}
+
+function onTimerEvent()
+{
+    roundNumber++;
+    scissorsMax = scissorsMax + 5;
+    roundText.setText('round: ' + roundNumber)
 }
