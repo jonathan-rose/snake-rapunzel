@@ -234,6 +234,11 @@ function hitScissors (hair, scissor)
 	scissor.destroy();
 	scissorsCount = scissors.countActive(); // updates scissor count when a scissor is destroyed
 	hair.disableBody(true, true);
+
+	this.model = this.sys.game.globals.model;
+    if (this.model.soundOn === true) {
+      	this.game.registry.get('snip').play();
+    }
 }
 
 function hitBomb (player, bomb)

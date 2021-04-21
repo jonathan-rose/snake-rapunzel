@@ -75,7 +75,8 @@ export default class PreloaderScene extends Phaser.Scene {
 
         // load assets needed in our game
         
-        this.load.audio('bgMusic', ['assets/Komiku_-_07_-_Run_against_the_universe.mp3']);
+        this.load.audio('bgMusic', ['assets/Wholesome.mp3']);
+        this.load.audio('snip', ['assets/snip.mp3']);
 
         this.load.spritesheet('head', 'assets/head.png', {frameWidth: 75, frameHeight: 75});
         
@@ -94,6 +95,8 @@ export default class PreloaderScene extends Phaser.Scene {
             loadingText.destroy();
             percentText.destroy();
             assetText.destroy();
+            this.game.registry.set('bgMusic', this.sound.add('bgMusic', { volume: 0.5, loop: true }));
+            this.game.registry.set('snip', this.sound.add('snip', { volume: 0.5 }));
             this.ready();
         }.bind(this));
 
