@@ -79,22 +79,22 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.audio('snip', ['assets/snip.mp3']);
         this.load.audio('levelUp', ['assets/levelUp.wav']);
 
-        this.load.image('menuBG', 'assets/menuBG.png');
-        this.load.image('optionsMenuBG', 'assets/optionsMenuBG.png');
-        this.load.image('creditsMenuBG', 'assets/creditsMenuBG.png');
-        this.load.image('aboutMenuBG', 'assets/aboutMenuBG.png');
+        this.load.image('menuBG', 'assets/menuBGsmall.png');
+        this.load.image('optionsMenuBG', 'assets/optionsMenuBGsmall.png');
+        this.load.image('creditsMenuBG', 'assets/creditsMenuBGsmall.png');
+        this.load.image('aboutMenuBG', 'assets/aboutMenuBGsmall.png');
 
-        this.load.image('playBtn', 'assets/playBtn.png');
-        this.load.image('playBtnPressed', 'assets/playBtnPressed.png');
-        this.load.image('optionsBtn', 'assets/optionsBtn.png');
-        this.load.image('optionsBtnPressed', 'assets/optionsBtnPressed.png');
-        this.load.image('creditsBtn', 'assets/creditsBtn.png');
-        this.load.image('creditsBtnPressed', 'assets/creditsBtnPressed.png');
-        this.load.image('menuBtn', 'assets/menuBtn.png');
-        this.load.image('menuBtnPressed', 'assets/menuBtnPressed.png');
+        this.load.image('playBtn', 'assets/playBtnsmall.png');
+        this.load.image('playBtnPressed', 'assets/playBtnPressedsmall.png');
+        this.load.image('optionsBtn', 'assets/optionsBtnsmall.png');
+        this.load.image('optionsBtnPressed', 'assets/optionsBtnPressedsmall.png');
+        this.load.image('creditsBtn', 'assets/creditsBtnsmall.png');
+        this.load.image('creditsBtnPressed', 'assets/creditsBtnPressedsmall.png');
+        this.load.image('menuBtn', 'assets/menuBtnsmall.png');
+        this.load.image('menuBtnPressed', 'assets/menuBtnPressedsmall.png');
 
-        this.load.image('checkedBox', 'assets/checkedBox.png');
-        this.load.image('uncheckedBox', 'assets/uncheckedBox.png');
+        this.load.image('checkedBox', 'assets/checkedBoxsmall.png');
+        this.load.image('uncheckedBox', 'assets/uncheckedBoxsmall.png');
 
         this.load.image('background', 'assets/background.png');
         this.load.image('scissors', 'assets/scissors.png');

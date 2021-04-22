@@ -15,13 +15,13 @@ export default class TitleScene extends Phaser.Scene {
         this.add.image(config.width/2, config.height/2, 'menuBG');
 
         // Game - Head to Rocket Select page
-        this.gameButton = new Button(this, config.width*0.5, config.height/2 + 60, 'playBtn', 'playBtnPressed', '', 'About');
+        this.gameButton = new Button(this, config.width*0.5, config.height/2 + 50, 'playBtn', 'playBtnPressed', '', 'About');
 
         // Options
-        this.optionsButton = new Button(this, config.width*0.5, config.height/2 + 170, 'optionsBtn', 'optionsBtnPressed', '', 'Options');
+        this.optionsButton = new Button(this, config.width*0.5, config.height/2 + 130, 'optionsBtn', 'optionsBtnPressed', '', 'Options');
 
         // About
-        this.aboutButton = new Button(this, config.width*0.5, config.height/2 + 280, 'creditsBtn', 'creditsBtnPressed', '', 'Credits');
+        this.aboutButton = new Button(this, config.width*0.5, config.height/2 + 210, 'creditsBtn', 'creditsBtnPressed', '', 'Credits');
 
         this.model = this.sys.game.globals.model;
         if (this.model.musicOn === true && this.model.bgMusicPlaying === false) {
