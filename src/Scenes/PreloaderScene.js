@@ -82,6 +82,7 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('menuBG', 'assets/menuBG.png');
         this.load.image('optionsMenuBG', 'assets/optionsMenuBG.png');
         this.load.image('creditsMenuBG', 'assets/creditsMenuBG.png');
+        this.load.image('aboutMenuBG', 'assets/aboutMenuBG.png');
 
         this.load.image('playBtn', 'assets/playBtn.png');
         this.load.image('playBtnPressed', 'assets/playBtnPressed.png');

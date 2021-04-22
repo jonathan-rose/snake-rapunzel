@@ -1,9 +1,10 @@
-# phaser-template
-A template for setting up a Phaser game with menus and sound options.
+# snake-rapunzel
+You are Snake Rapunzel!
+Your golden hair, so rare among snakes, has made your enemies mad with jealousy.
 
-To run:
+Keep as much of your hair as possible by dodging the scissors they throw! 
 
-npm run start
+Use the arrow keys to control Snake Rapunzel and avoid the flying scissors.
 
 
 # Instructions

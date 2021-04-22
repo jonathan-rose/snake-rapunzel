@@ -10,9 +10,9 @@ export default class AboutScene extends Phaser.Scene {
     create () {
         var config = this.game.config;
         this.model = this.sys.game.globals.model;
-        this.add.image(config.width*0.5, config.height*0.5, 'creditsMenuBG');
+        this.add.image(config.width*0.5, config.height*0.5, 'aboutMenuBG');
 
-        this.menuButton = new Button(this, config.width*0.5, config.height*0.8, 'menuBtn', 'menuBtnPressed', '', 'Title');
+        this.menuButton = new Button(this, config.width*0.5, config.height*0.8, 'playBtn', 'playBtnPressed', '', 'Game');
 
     }
 
