@@ -21,6 +21,7 @@ var scissorsMinVel = 100;
 var scissorsMaxVel = 200;
 var scissorsMinAngVel = -200;
 var scissorsMaxAngVel = 200;
+var hairLeft = 20;
 
 var timer;
 var timerLength = 10000; //ms
@@ -128,6 +129,8 @@ export default class GameScene extends Phaser.Scene {
         roundText = this.add.text(16, 16, 'round: ' + roundNumber, { fontSize: '32px', fill: '#000' });
         scissorText = this.add.text(16, 48, 'scissors: ' + scissorsMax, { fontSize: '32px', fill: '#000' });
 
+        roundText.fixedToCamera = true;
+
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(player, platforms);
         this.physics.add.collider(bombs, platforms);
@@ -143,9 +146,14 @@ export default class GameScene extends Phaser.Scene {
     {
         this.cameras.main.startFollow(player);
 
-        console.log(scissors.countActive());
+        // console.log(scissors.countActive());
 
         scissorText.setText('scissors: ' + scissors.countActive());
+
+        roundText.x = player.x - 250;
+        roundText.y = player.y - 250;
+        scissorText.x = player.x - 250;
+        scissorText.y = player.y - 300;
 
         updateHair();
         //player.setVelocity(0);
@@ -180,7 +188,7 @@ export default class GameScene extends Phaser.Scene {
         var randGameY = Phaser.Math.Between(50, height);
         addScissors(randGameX, randGameY);
 
-
+        scissorsCount = scissors.countActive();
 
     }
 };
@@ -247,6 +255,35 @@ function hitScissors (hair, scissor)
 	this.model = this.sys.game.globals.model;
     if (this.model.soundOn === true) {
       	this.game.registry.get('snip').play();
+    }
+
+    hairLeft = hairLeft - 1;
+
+    if (hairLeft == 0)
+    {
+        var config = this.game.config;
+
+        this.physics.pause();
+
+        player.setTint(0xff0000);
+
+        var timer = this.time.delayedCall(1000, function(){
+            var popup = this.add.image(player.x, player.y, 'deathScene')
+            this.add.text(player.x - 300, player.y - 100, 'Rounds survived: ', { fontSize: '60px', fill: '#000'});
+            this.add.text(player.x, player.y - 50, roundNumber, { fontSize: '80px', fill: '#000' });
+            var menuButton = new Button(this, player.x, player.y + 100, 'menuBtn', 'menuBtnPressed', '', 'Title');
+            // var playButton = new Button(this, 600, 550, 'Button', 'ButtonPressed', 'Play Again', 'Game');
+    
+            if (roundNumber > this.model.highscore) {
+                this.model.highscore = roundNumber;
+                var newhighscoretext = this.add.text(500, 290, 'New High Score!', { fontSize: '20px', fill: '#F9BE4F' });
+                newhighscoretext.angle = 35;
+            }
+    
+            roundNumber = 0;
+            hairLeft = 20;
+            scissorsMax = 19; 
+        }, [], this);
     }
 }
 
