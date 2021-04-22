@@ -16,7 +16,7 @@ export default class PreloaderScene extends Phaser.Scene {
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(width*0.33, height*0.35, 320, 50);
+        progressBox.fillRect(width*0.3, height*0.35, 320, 50);
 
         var loadingText = this.make.text({
             x: width / 2,
@@ -56,7 +56,7 @@ export default class PreloaderScene extends Phaser.Scene {
             percentText.setText(parseInt(value * 100) + '%');
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(width*0.34, height*0.36, 300 * value, 30);
+            progressBar.fillRect(width*0.31, height*0.36, 300 * value, 30);
         });
 
         // update file progress text
@@ -100,7 +100,8 @@ export default class PreloaderScene extends Phaser.Scene {
         this.load.image('scissors', 'assets/scissors.png');
         this.load.spritesheet('snake', 'assets/snake.png', {frameWidth: 150, frameHeight: 150});
         this.load.image('hair', 'assets/hair.png');
-
+        
+        this.load.image('deathScene', 'assets/deathscene.png');
 
         // remove progress bar when complete
         this.load.on('complete', function () {
