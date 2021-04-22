@@ -3,6 +3,7 @@ import Button from '../Objects/Button';
 
 var player;
 var stars;
+var hair;
 var bombs;
 var platforms;
 var hairGroup;
@@ -21,7 +22,7 @@ var scissorsMinVel = 100;
 var scissorsMaxVel = 200;
 var scissorsMinAngVel = -200;
 var scissorsMaxAngVel = 200;
-var hairLeft = 20;
+var hairLeft = 60;
 
 var timer;
 var timerLength = 10000; //ms
@@ -106,14 +107,17 @@ export default class GameScene extends Phaser.Scene {
         	repeat: -1
         });
 
+        hair = this.physics.add.group();
         bombs = this.physics.add.group();
+
 
         //  Init hairSection array
         for (var i = 1; i <= numhairSections-1; i++)
         {
-        	hairSection1[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
-        	hairSection2[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
-        	hairSection3[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
+        	hairSection1[i] = hair.create(width * 0.5, height * 0.5, 'hair');
+        	//hairSection1[i] = this.physics.add.sprite(width * 0.5, height * 0.5, 'hair');
+        	hairSection2[i] = hair.create(width * 0.5, height * 0.5, 'hair');
+        	hairSection3[i] = hair.create(width * 0.5, height * 0.5, 'hair');
         }
 
     	//  Init hairPath array
@@ -137,9 +141,10 @@ export default class GameScene extends Phaser.Scene {
 
         //this.physics.add.collider(player, scissors);
 
-        this.physics.add.collider(hairSection1, scissors, hitScissors, null, this);
-        this.physics.add.collider(hairSection2, scissors, hitScissors, null, this);
-        this.physics.add.collider(hairSection3, scissors, hitScissors, null, this);
+        //this.physics.add.collider(hairSection1, scissors, hitScissors, null, this);
+        this.physics.add.collider(hair, scissors, hitScissors, null, this);
+        //this.physics.add.collider(hairSection2, scissors, hitScissors, null, this);
+        //this.physics.add.collider(hairSection3, scissors, hitScissors, null, this);
     }
 
     update ()
@@ -246,11 +251,11 @@ function addScissors(x, y)
 	}
 }
 
-function hitScissors (hair, scissor)
+function hitScissors (hairPoint, scissor)
 {
 	scissor.destroy();
 	scissorsCount = scissors.countActive(); // updates scissor count when a scissor is destroyed
-	hair.disableBody(true, true);
+	hairPoint.disableBody(true, true);
 
 	this.model = this.sys.game.globals.model;
     if (this.model.soundOn === true) {
@@ -258,8 +263,11 @@ function hitScissors (hair, scissor)
     }
 
     hairLeft = hairLeft - 1;
+    //var hairCount = hairSection1.countActive() + hairSection2.countActive() + hairSection3.countActive();
+    var hairCount = hair.countActive();
+    console.log(hairCount);
 
-    if (hairLeft == 0)
+    if (hairCount == 0)
     {
         var config = this.game.config;
 
